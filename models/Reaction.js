@@ -27,7 +27,5 @@ const reactionSchema = new Schema(
       },
     }
   );
-  
-  const Reaction = model('thought', reactionSchema);
 
-module.exports = Reaction;
+module.exports = reactionSchema;
