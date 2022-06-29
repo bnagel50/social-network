@@ -18,7 +18,7 @@ const userController = {
           ? res.status(404).json({ message: 'No such user exists' })
           : User.findOneAndUpdate(
               { users: req.params.userId },
-              { $pull: { students: req.params.userId } },
+              { $pull: { users: req.params.userId } },
               { new: true }
             )
       )
@@ -30,7 +30,7 @@ const userController = {
     updateUser(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { thoguhts: req.body } },
+            { $set: req.body },
             { new: true }
             )
     },
