@@ -33,6 +33,15 @@ const userController = {
             { $set: req.body },
             { new: true }
             )
+            .then((user) => {
+                !user
+              ? res.status(404).json({ message: 'No such user exists' })
+              : res.json(user)
+            })
+            .catch((err) => {
+                console.log(err);
+                return res.status(500).json(err);
+            });
     },
     findUsers(req, res) {
         User.find()
@@ -50,6 +59,30 @@ const userController = {
           return res.status(500).json(err);
         });
     },
+    addFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id : req.params.userId },
+            { $addToSet: { friends: req.params.friendId } },
+            { new: true },
+        )
+        .then((friend) => {
+            !friend
+          ? res.status(404).json({ message: 'No such friend exists' })
+          : res.json(friend)
+        });
+    },
+    removeFriend(req, res) {
+        User.findOneAndUpdate(
+            { _id: req.params.userId },
+            { $pull: { friends: req.params.friendId } },
+            { new: true },
+        )
+        .then((friend) => {
+            !friend
+          ? res.status(404).json({ message: 'No such friend exists' })
+          : res.json(friend)
+        })
+    }
 }
 
 module.exports = userController
